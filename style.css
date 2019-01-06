@@ -1,0 +1,89 @@
+body {
+  background: black;
+  color: white;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  margin: 20px;
+}
+
+#canvas {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: block;
+  margin-bottom: 20px;
+}
+
+button {
+  border: 1px solid white;
+  background: black;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  min-width: 80px;
+}
+
+button:hover {
+  background: #222;
+}
+
+button[disabled] {
+  opacity: 0.65;
+}
+
+.counters {
+  display: flex;
+  margin: 20px 0;
+}
+
+.counter {
+  min-width: 150px;
+}
+
+.counter span {
+  color: limegreen;
+  font-size: 22px;
+  margin: 10px 0;
+  display: inline-block;
+}
+
+.panel {
+  max-width: 400px;
+  flex: 1;
+  height: 100%;
+  align-content: flex-start;
+  justify-items: flex-start;
+  align-self: flex-start;
+}
+
+a,
+a:visited,
+a:active {
+  color: limegreen;
+  text-decoration: none;
+}
+
+.controls {
+  max-width: 300px;
+}
+
+.row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.row button:not(:last-child) {
+  margin-right: 20px;
+}
+
+#play {
+  flex: 1;
+  padding: 15px 25px;
+  font-size: 18px;
+}
