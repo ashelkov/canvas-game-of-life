@@ -7,6 +7,7 @@
   const WIDTH = COLS * CELLSIZE + COLS - 1;
   const HEIGHT = ROWS * CELLSIZE + ROWS - 1;
   const TICK = 75;
+  const DENSITY = 0.15;
 
   let gen = [];
   let generation;
@@ -39,7 +40,7 @@
 
     ctrl.genBtn = document.getElementById('generate');
     ctrl.genBtn.addEventListener('click', function() {
-      generateField({ density: 0.15 });
+      generateField({ density: DENSITY });
       drawField();
     });
 
@@ -76,7 +77,7 @@
     }
   }
 
-  function generateField({ density = 0.5 }) {
+  function generateField({ density = DENSITY }) {
     gen = [];
     generation = 0;
     population = 0;
@@ -160,7 +161,7 @@
   }
 
   function clearField() {
-    generateField({ density: 0.15 });
+    generateField({ density: DENSITY });
     drawField();
   }
 
