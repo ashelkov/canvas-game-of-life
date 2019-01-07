@@ -10,7 +10,8 @@
 
   let gen = [];
   let generation;
-  let population;
+  let pop1;
+  let pop2;
   let tickDelay = 75;
 
   let canvas;
@@ -19,7 +20,7 @@
 
   let allowDrawing = true;
   let isDrawing = false;
-  let isErasing;
+  let drawColor = 1;
 
   const ctrl = {};
 
@@ -72,6 +73,15 @@
     window.addEventListener('mouseup', () => (isDrawing = false));
     canvas.addEventListener('mousemove', handleDrawing);
     canvas.addEventListener('click', handleDrawing);
+    canvas.addEventListener('contextmenu', function(e) {
+      if (e.button == 2) {
+        e.preventDefault();
+      }
+    });
+
+    ctrl.progressBar = document.querySelector('.progress .bar');
+    ctrl.pop1 = document.querySelector('.pop1');
+    ctrl.pop2 = document.querySelector('.pop2');
   }
 
   function drawGrid() {
@@ -100,11 +110,14 @@
   function generateField({ density = DENSITY }) {
     gen = [];
     generation = 0;
-    population = 0;
+    pop1 = 0;
+    pop2 = 0;
     for (var i = 0; i < ROWS; i++) {
       for (var j = 0, row = []; j < COLS; j++) {
-        row[j] = Math.random() < density ? (population++, 1) : 0;
-        population += row[j];
+        const rnd = Math.random();
+        row[j] = rnd < density ? (rnd < density / 2 ? 1 : 2) : 0;
+        if (row[j] === 1) pop1++;
+        if (row[j] === 2) pop2++;
       }
       gen.push(row);
     }
@@ -116,7 +129,7 @@
   function drawField() {
     for (var i = 0; i < ROWS; i++) {
       for (var j = 0; j < COLS; j++) {
-        ctx.fillStyle = gen[i][j] ? 'limegreen' : 'black';
+        ctx.fillStyle = ['black', 'limegreen', 'orange'][gen[i][j]];
         const x1 = j * (CELLSIZE + 1);
         const y1 = i * (CELLSIZE + 1);
         ctx.fillRect(x1, y1, CELLSIZE, CELLSIZE);
@@ -157,7 +170,8 @@
 
   function nextGeneration() {
     const nextGen = [];
-    population = 0;
+    pop1 = 0;
+    pop2 = 0;
     for (var i = 0; i < ROWS; i++) {
       for (var j = 0, row = []; j < COLS; j++) {
         const iprev = i === 0 ? ROWS - 1 : i - 1;
@@ -174,11 +188,12 @@
           gen[inext][j],
           gen[inext][jnext],
         ];
-        const value = around.filter((_) => !!_).length;
-        if (value === 2) row[j] = gen[i][j];
-        if (value === 3) row[j] = 1;
-        if (value < 2 || value > 3) row[j] = 0;
-        population += row[j];
+        const alive = around.filter((_) => !!_);
+        if (alive.length === 2) row[j] = gen[i][j];
+        if (alive.length === 3) row[j] = alive.filter((_) => _ === 1).length > 1 ? 1 : 2;
+        if (alive.length < 2 || alive.length > 3) row[j] = 0;
+        if (row[j] === 1) pop1++;
+        if (row[j] === 2) pop2++;
       }
       nextGen.push(row);
     }
@@ -193,7 +208,8 @@
 
   function updateCounters() {
     ctrl.genCounter.innerText = generation;
-    ctrl.popCounter.innerText = population;
+    ctrl.popCounter.innerText = pop1 + pop2;
+    updateProgress();
   }
 
   function handleMouseDown(e) {
@@ -201,7 +217,7 @@
     isDrawing = true;
     const i = (e.offsetY / (CELLSIZE + 1)) | 0;
     const j = (e.offsetX / (CELLSIZE + 1)) | 0;
-    isErasing = gen[i][j];
+    drawColor = gen[i][j] ? 0 : e.button ? 2 : 1;
   }
 
   function handleDrawing(e) {
@@ -209,10 +225,16 @@
     if (e.type === 'mousemove' && !isDrawing) return;
     const i = (e.offsetY / (CELLSIZE + 1)) | 0;
     const j = (e.offsetX / (CELLSIZE + 1)) | 0;
-    gen[i][j] = isErasing ? 0 : 1;
+    gen[i][j] = drawColor;
     const x1 = j * (CELLSIZE + 1);
     const y1 = i * (CELLSIZE + 1);
-    ctx.fillStyle = isErasing ? 'black' : 'limegreen';
+    ctx.fillStyle = ['black', 'limegreen', 'orange'][drawColor];
     ctx.fillRect(x1, y1, CELLSIZE, CELLSIZE);
+  }
+
+  function updateProgress() {
+    ctrl.progressBar.style.width = `${Math.round((pop1 / (pop1 + pop2)) * 1000) / 10}%`;
+    ctrl.pop1.innerText = pop1;
+    ctrl.pop2.innerText = pop2;
   }
 })();

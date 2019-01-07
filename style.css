@@ -70,6 +70,12 @@ a:active {
   text-decoration: none;
 }
 
+.wikilink {
+  font-size: 14px;
+  text-align: right;
+  margin-top: -10px;
+}
+
 .controls {
   max-width: 300px;
 }
@@ -95,9 +101,39 @@ a:active {
   margin-top: 50px;
   margin-bottom: 50px;
   line-height: 1.6;
+  font-size: 14px;
 }
 
 button.active {
   color: limegreen;
   border-color: limegreen;
+}
+
+.progress-wrapper {
+  margin: 20px 0 30px;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+.progress {
+  width: 100%;
+  height: 6px;
+  background: orange;
+  margin-bottom: 5px;
+}
+
+.progress .bar {
+  width: 50%;
+  height: 100%;
+  background: limegreen;
+  transition: width linear 0.2s;
+}
+
+.progress::after {
+  display: block;
+  content: '';
+  width: 50%;
+  height: 15px;
+  border-right: 1px solid white;
+  transform: translateX(-1px);
 }

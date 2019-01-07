@@ -15,18 +15,28 @@
     </div>
     <div class="panel">
       <h1 class="lighter">Conway's Game of Life</h1>
-      <p>
+      <div class="wikilink">
         <a
           target="_blank"
           href="https://ru.wikipedia.org/wiki/%D0%98%D0%B3%D1%80%D0%B0_%C2%AB%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%C2%BB"
         >
           Read on Wikipedia
         </a>
-      </p>
+      </div>
       <div class="counters">
         <p class="counter">Generation:<br/> <span id="gen_counter">0</span></span>
         <p class="counter">Population:<br/> <span id="pop_counter">0</span></span>
       </div>
+      <div class="progress-wrapper">
+        <div class="progress">
+          <div class="bar"></div>
+        </div>
+        <div class="row">
+          <div class="pop1">50.0%</div>
+          <div class="pop2">50.0%</div>
+        </div>
+      </div>
+
       <div class="controls">
         <div class="row">
           <button id="play">Play</button>
@@ -36,14 +46,17 @@
 
             <button id="clear">Clear</button>
   
-            <button id="generate">Generate</button>
+            <button id="generate">Fill</button>
          </div>
-         <p class="hint">
-           Hint: You allow to draw on a canvas when game is paused or not started yet.
-         </p>
-         <div class="row">
+
+         <div class="row" style="margin-top: 40px">
            <button id="faster">2x Speed</button>
          </div>
+
+         <p class="hint">
+            Hint: You allow to draw on a canvas when game is paused or not started yet. <br/>
+            Left button - to draw <span style="color: limegreen">green</span>, right - <span style="color: orange">orange</span>.
+          </p>
       </div>
     </div>
   </body>
