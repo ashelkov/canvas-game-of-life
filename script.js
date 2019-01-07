@@ -13,19 +13,24 @@
   let generation;
   let population;
 
+  let canvas;
   let ctx;
   let intervalId;
+
+  let allowDrawing = true;
+  let isDrawing = false;
+  let isErasing;
 
   const ctrl = {};
 
   function init() {
-    const canvas = document.getElementById('canvas');
+    canvas = document.getElementById('canvas');
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
 
     ctx = canvas.getContext('2d');
 
-    addEventListeners();
+    addEventListeners(canvas);
 
     drawGrid();
     clearField();
@@ -52,6 +57,11 @@
 
     ctrl.genCounter = document.getElementById('gen_counter');
     ctrl.popCounter = document.getElementById('pop_counter');
+
+    canvas.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', () => (isDrawing = false));
+    canvas.addEventListener('mousemove', handleDrawing);
+    canvas.addEventListener('click', handleDrawing);
   }
 
   function drawGrid() {
@@ -89,6 +99,8 @@
       gen.push(row);
     }
     updateCounters();
+    canvas.classList.add('drawable');
+    allowDrawing = true;
   }
 
   function drawField() {
@@ -111,6 +123,8 @@
       ctrl.tickBtn.disabled = true;
       ctrl.clearBtn.disabled = true;
       ctrl.genBtn.disabled = true;
+      canvas.classList.remove('drawable');
+      allowDrawing = false;
     }
   }
 
@@ -121,6 +135,8 @@
     ctrl.tickBtn.disabled = false;
     ctrl.clearBtn.disabled = false;
     ctrl.genBtn.disabled = false;
+    canvas.classList.add('drawable');
+    allowDrawing = true;
   }
 
   function tick() {
@@ -168,5 +184,25 @@
   function updateCounters() {
     ctrl.genCounter.innerText = generation;
     ctrl.popCounter.innerText = population;
+  }
+
+  function handleMouseDown(e) {
+    if (!allowDrawing) return;
+    isDrawing = true;
+    const i = (e.offsetY / (CELLSIZE + 1)) | 0;
+    const j = (e.offsetX / (CELLSIZE + 1)) | 0;
+    isErasing = gen[i][j];
+  }
+
+  function handleDrawing(e) {
+    if (e.type === 'click' && !allowDrawing) return;
+    if (e.type === 'mousemove' && !isDrawing) return;
+    const i = (e.offsetY / (CELLSIZE + 1)) | 0;
+    const j = (e.offsetX / (CELLSIZE + 1)) | 0;
+    gen[i][j] = isErasing ? 0 : 1;
+    const x1 = j * (CELLSIZE + 1);
+    const y1 = i * (CELLSIZE + 1);
+    ctx.fillStyle = isErasing ? 'black' : 'limegreen';
+    ctx.fillRect(x1, y1, CELLSIZE, CELLSIZE);
   }
 })();

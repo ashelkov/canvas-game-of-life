@@ -17,6 +17,10 @@ body {
   margin-bottom: 20px;
 }
 
+.drawable {
+  cursor: crosshair;
+}
+
 button {
   border: 1px solid white;
   background: #222;
@@ -56,10 +60,6 @@ button[disabled] {
 
 .panel {
   max-width: 400px;
-  flex: 1;
-  height: 100%;
-  align-content: flex-start;
-  justify-items: flex-start;
   align-self: flex-start;
 }
 
@@ -88,4 +88,10 @@ a:active {
 
 .lighter {
   font-weight: normal;
+}
+
+.hint {
+  color: #ccc;
+  margin-top: 50px;
+  line-height: 1.6;
 }
