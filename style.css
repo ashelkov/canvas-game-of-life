@@ -93,5 +93,11 @@ a:active {
 .hint {
   color: #ccc;
   margin-top: 50px;
+  margin-bottom: 50px;
   line-height: 1.6;
+}
+
+button.active {
+  color: limegreen;
+  border-color: limegreen;
 }

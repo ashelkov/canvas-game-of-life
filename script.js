@@ -6,12 +6,12 @@
   const CELLSIZE = 6;
   const WIDTH = COLS * CELLSIZE + COLS - 1;
   const HEIGHT = ROWS * CELLSIZE + ROWS - 1;
-  const TICK = 75;
   const DENSITY = 0.15;
 
   let gen = [];
   let generation;
   let population;
+  let tickDelay = 75;
 
   let canvas;
   let ctx;
@@ -53,6 +53,16 @@
     ctrl.clearBtn.addEventListener('click', function() {
       generateField({ density: 0 });
       drawField();
+    });
+
+    ctrl.fasterBtn = document.getElementById('faster');
+    ctrl.fasterBtn.addEventListener('click', () => {
+      ctrl.fasterBtn.classList.toggle('active');
+      tickDelay = tickDelay === 75 ? 40 : 75;
+      if (intervalId) {
+        pause();
+        startOrPause();
+      }
     });
 
     ctrl.genCounter = document.getElementById('gen_counter');
@@ -118,7 +128,7 @@
     if (intervalId) {
       pause();
     } else {
-      intervalId = setInterval(tick, TICK);
+      intervalId = setInterval(tick, tickDelay);
       ctrl.playBtn.innerText = 'pause';
       ctrl.tickBtn.disabled = true;
       ctrl.clearBtn.disabled = true;
